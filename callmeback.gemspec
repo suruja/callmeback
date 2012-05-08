@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "callmeback.gemspec",
     "lib/callmeback.rb",
     "spec/app/models/example.rb",
     "spec/callmeback_spec.rb",
