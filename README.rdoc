@@ -1,9 +1,58 @@
-= callmeback
+= Call Me Back
 
-Description goes here.
+== Synopsis
+Automatically provide dead-simple ActiveSupport callbacks to your instance methods.
+
+== Preface
+This gem is a small extension of ActiveSupport available features. In fact, as referred at this {this link}[http://api.rubyonrails.org/classes/ActiveSupport/Callbacks.html], creating callbacks for custom methods induces modify your existent method code source. This gem just automates this task.
+
+== Usage
+  class Example
+    include Callmeback
+
+    before :foo => :bar
+
+    def foo
+      (@result ||= []) << 'foo'
+    end
+
+    def bar
+      (@result ||= []) << 'bar'
+    end
+  end
+
+  example = Example.new
+  example.foo #=> ['bar','foo']
+
+Because this extension overrides the +.initialize+ method, if you need to redefine it, please add +callback_binding+ to your +.initialize+ method. Here is the same example as above but implemeting the +.initialize+ method:
+  class Example
+    include Callmeback
+
+    after :foo => :bar
+
+    def initialize
+      @result = []
+      callback_binding
+    end
+
+    def foo
+      @result << 'foo'
+    end
+
+    def bar
+      @result << 'bar'
+    end
+  end
+
+  example = Example.new
+  example.foo #=> ['foo','bar']
+
+You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
+
+== How is it work?
+First, this gem module defines the class methods +.before+, +.after+, +.around+ in your class. Then when you instanciate your class, the gem overrides your binded methods and wraps them to bind your custom callbacks.
 
 == Contributing to callmeback
- 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
 * Fork the project.
@@ -13,7 +62,5 @@ Description goes here.
 * Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
 
 == Copyright
-
 Copyright (c) 2012 Sébastien Azimi. See LICENSE.txt for
 further details.
-
