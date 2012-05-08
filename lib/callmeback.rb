@@ -5,6 +5,9 @@ module Callmeback
   def self.included(base)
     $callmeback_methods = {}
     base.extend(ClassMethods)
+    base.module_eval do
+      include ActiveSupport::Callbacks
+    end
   end
 
   def initialize

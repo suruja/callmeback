@@ -1,5 +1,4 @@
 class Example
-  include ActiveSupport::Callbacks
   include Callmeback
 
   before :before_foo => :bar
