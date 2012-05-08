@@ -17,10 +17,10 @@ Jeweler::Tasks.new do |gem|
   gem.name = "callmeback"
   gem.homepage = "http://github.com/suruja/callmeback"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Automatically provide dead-simple ActiveSupport callbacks to your instance methods.}
+  gem.description = %Q{}
   gem.email = "sebstp@gmail.com"
-  gem.authors = ["Sébastien Azimi"]
+  gem.authors = ["Sebastien Azimi"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
