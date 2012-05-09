@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/suruja/callmeback"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.23"
+  s.rubygems_version = "1.8.24"
   s.summary = "Automatically provide dead-simple ActiveSupport callbacks to your instance methods."
 
   if s.respond_to? :specification_version then
