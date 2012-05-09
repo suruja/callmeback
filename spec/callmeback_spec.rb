@@ -16,17 +16,17 @@ describe Callmeback do
     it "should fire a callback before the original method is executed" do
       example.before_foo.should == %w{bar foo}
     end
+  end
 
-    describe ".after" do
-      it "should fire a callback after the original method is executed" do
-        example.after_foo.should == %w{foo bar}
-      end
+  describe ".after" do
+    it "should fire a callback after the original method is executed" do
+      example.after_foo.should == %w{foo bar}
     end
+  end
 
-    describe ".around" do
-      it "should fire a callback around the original method is executed" do
-        example.around_foo.should == %w{bar foo bar}
-      end
+  describe ".around" do
+    it "should fire a callback around the original method is executed" do
+      example.around_foo.should == %w{bar foo bar}
     end
   end
 end
