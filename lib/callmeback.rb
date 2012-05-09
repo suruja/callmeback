@@ -1,6 +1,7 @@
 require 'active_support/callbacks'
 
 module Callmeback
+  extend ActiveSupport::Callbacks
 
   def self.included(base)
     $callmeback_methods = {}
@@ -42,7 +43,7 @@ module Callmeback
   module ClassMethods
     class_eval do
       [:before, :after, :around].each do |method_name|
-        define_method method_name do|hsh|
+        define_method method_name do |hsh|
           $callmeback_methods[method_name] = hsh
         end
       end

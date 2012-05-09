@@ -48,7 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (>= 2.3.5)
+  activesupport (>= 3.2.3)
   bundler
   guard
   guard-rspec
