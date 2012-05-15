@@ -11,8 +11,8 @@ module Callmeback
     end
   end
 
-  def initialize
-    super
+  def initialize(*args, &block)
+    super(*args, &block)
     callback_binding
   end
 
