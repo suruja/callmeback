@@ -61,6 +61,31 @@ Because this extension overrides the +.initialize+ method, if you need to redefi
   example = Example.new
   example.foo #=> ['foo','bar']
 
+You can pass an array of method symbol:
+  before :foo => [:bar, :bar]
+  # => "bar bar foo"
+
+You also can pass blocks:
+  before :foo do
+    bar
+  end
+
+  after :foo do
+    bar
+  end
+
+  around :foo do |&block|
+    bar
+    block.call
+    bar
+  end
+
+Even combine them with methods:
+  before :foo => [:bar, :bar]
+  after do
+    bar
+  end
+
 You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
 
 Note that Mongoid is used in these examples but it *should* also work with ActiveRecord.
