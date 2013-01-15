@@ -13,12 +13,49 @@ class Example
   around :complex_foo => [:around_bar, :around_bar]
   after :complex_foo => [:bar, :bar]
 
+  before :block_before_foo do
+    bar
+  end
+
+  after :block_after_foo do
+    bar
+  end
+
+  around :block_around_foo do |&block|
+    bar
+    block.call
+    bar
+  end
+
+  before :complex_with_blocks_foo do
+    bar
+    bar
+  end
+  after :complex_with_blocks_foo do
+    bar
+  end
+  around :complex_with_blocks_foo do |&block|
+    bar
+    block.call
+    bar
+  end
+
+  before :complex_with_methods_and_blocks_foo => [:bar, :bar]
+  after :complex_with_methods_and_blocks_foo do
+    bar
+  end
+  around :complex_with_methods_and_blocks_foo do |&block|
+    bar
+    block.call
+    bar
+  end
+
   def initialize
     @result = []
     callback_binding
   end
 
-  %w{before after around multiple_before multiple_after multiple_around complex}.each do |prefix|
+  %w{before after around multiple_before multiple_after multiple_around complex block_before block_after block_around complex_with_blocks complex_with_methods_and_blocks}.each do |prefix|
     define_method "#{prefix}_foo" do
       foo
     end

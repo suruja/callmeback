@@ -24,7 +24,7 @@ module Callmeback
         callback_hash.each do |binded, callbacks|
           [callbacks].flatten.each do |callback|
 
-            binded_suffix = "#{binded}_#{callback}_#{self.class.callmeback_method_index}"
+            binded_suffix = "method_#{self.class.callmeback_method_index}"
             self.class.callmeback_method_index += 1
 
             prefixed_wrapped_binded = "callmeback_wrapped_#{binded_suffix}"
@@ -57,9 +57,10 @@ module Callmeback
 
     class_eval do
       [:before, :after, :around].each do |callback_prefix|
-        define_method callback_prefix do |hsh|
+        define_method callback_prefix do |arg, &block|
           self.callmeback_methods[callback_prefix] ||= []
-          self.callmeback_methods[callback_prefix] << hsh
+          arg = {:"#{arg}" => block} if block.is_a?(Proc)
+          self.callmeback_methods[callback_prefix] << arg
         end
       end
     end

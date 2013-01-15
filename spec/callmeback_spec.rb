@@ -55,4 +55,30 @@ describe Callmeback do
       example.complex_foo.should == %w{bar bar bar foo bar bar bar bar}
     end
   end
+
+  context "the gem should handle blocks as callbacks" do
+    it "should fire a callback block before the original method is executed" do
+      example.block_before_foo.should == %w{bar foo}
+    end
+
+    it "should fire a callback block after the original method is executed" do
+      example.block_after_foo.should == %w{foo bar}
+    end
+
+    it "should fire a callback block around the original method is executed" do
+      example.block_around_foo.should == %w{bar foo bar}
+    end
+  end
+
+  context "the gem should handle blocks as callbacks" do
+    it "should fire the callbacks in the order of their call" do
+      example.complex_with_blocks_foo.should == %w{bar bar bar foo bar bar}
+    end
+  end
+
+  context "the gem should handle blocks as callbacks and methods" do
+    it "should fire the callbacks in the order of their call" do
+      example.complex_with_methods_and_blocks_foo.should == %w{bar bar bar foo bar bar}
+    end
+  end
 end
