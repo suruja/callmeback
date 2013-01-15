@@ -29,4 +29,30 @@ describe Callmeback do
       example.around_foo.should == %w{bar foo bar}
     end
   end
+
+  context "the callback value is an array of methods" do
+    describe ".before" do
+      it "should fire array-length callbacks before the original method is executed" do
+        example.multiple_before_foo.should == %w{bar bar foo}
+      end
+    end
+
+    describe ".after" do
+      it "should fire array-length callbacks after the original method is executed" do
+        example.multiple_after_foo.should == %w{foo bar bar}
+      end
+    end
+
+    describe ".around" do
+      it "should fire array-length callbacks around the original method is executed" do
+        example.multiple_around_foo.should == %w{bar bar foo bar bar}
+      end
+    end
+  end
+
+  context "the gem should handle complex callback structures" do
+    it "should fire the callbacks in the order of their call" do
+      example.complex_foo.should == %w{bar bar bar foo bar bar bar bar}
+    end
+  end
 end

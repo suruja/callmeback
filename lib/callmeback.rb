@@ -6,32 +6,46 @@ module Callmeback
   include ActiveSupport::Callbacks
 
   included do
+    # Initialize the callmeback methods and method index
     self.callmeback_methods = {}
+    self.callmeback_method_index = 0
   end
 
   def initialize(*args, &block)
     super(*args, &block)
+
+    # Overwrite the initialize method to perform the defined callbacks binding
     callback_binding
   end
 
   def callback_binding
-    self.class.callmeback_methods.each do |pst, vals|
-      vals.each do |binded, callback|
-        class_eval do
-          prefixed_binded = "callmeback_wrapped_#{binded}"
-          define_method prefixed_binded do
-            class_eval do
-              define_callbacks prefixed_binded
-              set_callback prefixed_binded, pst, callback
-            end
+    self.class.callmeback_methods.each do |callback_prefix, callback_array|
+      callback_array.each do |callback_hash|
+        callback_hash.each do |binded, callbacks|
+          [callbacks].flatten.each do |callback|
 
-            run_callbacks prefixed_binded do
-              send "callmeback_unwrapped_#{binded}"
+            binded_suffix = "#{binded}_#{callback}_#{self.class.callmeback_method_index}"
+            self.class.callmeback_method_index += 1
+
+            prefixed_wrapped_binded = "callmeback_wrapped_#{binded_suffix}"
+            prefixed_unwrapped_binded = "callmeback_unwrapped_#{binded_suffix}"
+
+            class_eval do
+              define_method prefixed_wrapped_binded do
+                class_eval do
+                  define_callbacks prefixed_wrapped_binded
+                  set_callback prefixed_wrapped_binded, callback_prefix, callback
+                end
+
+                run_callbacks prefixed_wrapped_binded do
+                  send prefixed_unwrapped_binded
+                end
+              end
+
+              alias_method prefixed_unwrapped_binded, binded
+              alias_method binded, prefixed_wrapped_binded
             end
           end
-
-          alias_method "callmeback_unwrapped_#{binded}", binded
-          alias_method binded, "callmeback_wrapped_#{binded}"
         end
       end
     end
@@ -39,11 +53,13 @@ module Callmeback
 
   module ClassMethods
     attr_accessor :callmeback_methods
+    attr_accessor :callmeback_method_index
 
     class_eval do
-      [:before, :after, :around].each do |method_name|
-        define_method method_name do |hsh|
-          self.callmeback_methods[method_name] = hsh
+      [:before, :after, :around].each do |callback_prefix|
+        define_method callback_prefix do |hsh|
+          self.callmeback_methods[callback_prefix] ||= []
+          self.callmeback_methods[callback_prefix] << hsh
         end
       end
     end
