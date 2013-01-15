@@ -17,7 +17,10 @@ Or add it to your gem file:
   gem 'callmeback'
 
 == Usage
+Add +include Callmeback+ after **all** your module inclusions to be sure the gem works.
+
   class Example
+    include Mongoid::Document
     include Callmeback
 
     before :foo => :bar
@@ -36,6 +39,7 @@ Or add it to your gem file:
 
 Because this extension overrides the +.initialize+ method, if you need to redefine it, please add +callback_binding+ to your +.initialize+ method. Here is the same example as above but implemeting the +.initialize+ method:
   class Example
+    include Mongoid::Document
     include Callmeback
 
     after :foo => :bar
@@ -58,6 +62,8 @@ Because this extension overrides the +.initialize+ method, if you need to redefi
   example.foo #=> ['foo','bar']
 
 You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
+
+Note that Mongoid is used in these examples but it *should* also work with ActiveRecord.
 
 == How is it work?
 First, this gem module defines the class methods +.before+, +.after+, +.around+ in your class. Then when you instanciate your class, the gem overrides your binded methods and wraps them to bind your custom callbacks.
