@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sebastien Azimi"]
-  s.date = "2012-05-09"
+  s.date = "2013-01-15"
   s.description = ""
   s.email = "sebstp@gmail.com"
   s.extra_rdoc_files = [
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/suruja/callmeback"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.23"
   s.summary = "Automatically provide dead-simple ActiveSupport callbacks to your instance methods."
 
   if s.respond_to? :specification_version then
