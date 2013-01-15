@@ -1,14 +1,12 @@
+require 'active_support/concern'
 require 'active_support/callbacks'
 
 module Callmeback
-  extend ActiveSupport::Callbacks
+  extend ActiveSupport::Concern
+  include ActiveSupport::Callbacks
 
-  def self.included(base)
-    $callmeback_methods = {}
-    base.extend(ClassMethods)
-    base.module_eval do
-      include ActiveSupport::Callbacks
-    end
+  included do
+    self.callmeback_methods = {}
   end
 
   def initialize(*args, &block)
@@ -17,34 +15,35 @@ module Callmeback
   end
 
   def callback_binding
-    $callmeback_methods.each do |pst, vals|
+    self.class.callmeback_methods.each do |pst, vals|
       vals.each do |binded, callback|
         class_eval do
-          define_method "wrapped_#{binded}" do
-            prefix = 'callmeback'
-            prefixed_binded = "#{prefix}_#{binded}"
+          prefixed_binded = "callmeback_wrapped_#{binded}"
+          define_method prefixed_binded do
             class_eval do
               define_callbacks prefixed_binded
               set_callback prefixed_binded, pst, callback
             end
 
             run_callbacks prefixed_binded do
-              send "unwrapped_#{binded}"
+              send "callmeback_unwrapped_#{binded}"
             end
           end
 
-          alias_method "unwrapped_#{binded}", binded
-          alias_method binded, "wrapped_#{binded}"
+          alias_method "callmeback_unwrapped_#{binded}", binded
+          alias_method binded, "callmeback_wrapped_#{binded}"
         end
       end
     end
   end
 
   module ClassMethods
+    attr_accessor :callmeback_methods
+
     class_eval do
       [:before, :after, :around].each do |method_name|
         define_method method_name do |hsh|
-          $callmeback_methods[method_name] = hsh
+          self.callmeback_methods[method_name] = hsh
         end
       end
     end
