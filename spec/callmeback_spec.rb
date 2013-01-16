@@ -81,4 +81,44 @@ describe Callmeback do
       example.complex_with_methods_and_blocks_foo.should == %w{bar bar bar foo bar bar}
     end
   end
+
+  context "the gem should handle regex as callback argument" do
+    it "should fire the callback for all the given methods that match the given regex" do
+      example.regex_before_method1_foo.should == %w{bar foo}
+      example.result.clear
+      example.regex_before_method2_foo.should == %w{bar foo}
+    end
+
+    it "should fire the callback for all the given blocks that match the given regex" do
+      example.regex_block_before_method1_foo.should == %w{bar foo}
+      example.result.clear
+      example.regex_block_before_method2_foo.should == %w{bar foo}
+    end
+
+    it "should fire the callback for all the given methods and blocks that match the given regex" do
+      example.regex_block_method_before_method1_foo.should == %w{bar foo bar}
+      example.result.clear
+      example.regex_block_method_before_method2_foo.should == %w{bar foo bar}
+    end
+  end
+
+  context "the gem should handle array as callback argument" do
+    it "should fire the callback for all the given methods that are included in the given array" do
+      example.array_around_method1_foo.should == %w{bar foo bar}
+      example.result.clear
+      example.array_around_method2_foo.should == %w{bar foo bar}
+    end
+
+    it "should fire the callback for all the given blocks that are included in the given array" do
+      example.array_block_before_method1_foo.should == %w{bar foo}
+      example.result.clear
+      example.array_block_before_method2_foo.should == %w{bar foo}
+    end
+
+    it "should fire the callback for all the given methods and blocks that are included in the given array" do
+      example.array_block_method_before_method1_foo.should == %w{bar foo bar}
+      example.result.clear
+      example.array_block_method_before_method2_foo.should == %w{bar foo bar}
+    end
+  end
 end

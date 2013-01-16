@@ -17,10 +17,10 @@ Or add it to your gem file:
   gem 'callmeback'
 
 == Usage
-Add +include Callmeback+ after **all** your module inclusions to be sure the gem works.
 
+=== Basic
+Add +include Callmeback+ after *all* your module inclusions to be sure the gem works.
   class Example
-    include Mongoid::Document
     include Callmeback
 
     before :foo => :bar
@@ -38,33 +38,23 @@ Add +include Callmeback+ after **all** your module inclusions to be sure the gem
   example.foo #=> ['bar','foo']
 
 Because this extension overrides the +.initialize+ method, if you need to redefine it, please add +callback_binding+ to your +.initialize+ method. Here is the same example as above but implemeting the +.initialize+ method:
-  class Example
-    include Mongoid::Document
-    include Callmeback
 
-    after :foo => :bar
+You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
+To perform the +around+ callbacks, define them like:
+  around :foo => :wrapped_foo
 
-    def initialize
-      @result = []
-      callback_binding
-    end
-
-    def foo
-      @result << 'foo'
-    end
-
-    def bar
-      @result << 'bar'
-    end
+  def wrapped_foo
+    bar
+    yield
+    bar
   end
 
-  example = Example.new
-  example.foo #=> ['foo','bar']
-
-You can pass an array of method symbol:
+=== Array of callbacks
+You can pass an array of callback method symbol:
   before :foo => [:bar, :bar]
-  # => "bar bar foo"
+  # => ['bar', 'bar', 'foo']
 
+=== Blocks
 You also can pass blocks:
   before :foo do
     bar
@@ -80,15 +70,20 @@ You also can pass blocks:
     bar
   end
 
-Even combine them with methods:
+=== Combinations
+You can combine them with methods:
   before :foo => [:bar, :bar]
-  after do
+  after :foo do
     bar
   end
 
-You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
+=== Array of binded methods
+You can pass an array of the methods you want:
+  before [:foo, :bar] => [:other_method]
 
-Note that Mongoid is used in these examples but it *should* also work with ActiveRecord.
+=== Regex
+You can run a callback for every method that matches a given regex:
+  before /^fo.$/ => [:bar, :bar]
 
 == How is it work?
 First, this gem module defines the class methods +.before+, +.after+, +.around+ in your class. Then when you instanciate your class, the gem overrides your binded methods and wraps them to bind your custom callbacks.
