@@ -1,6 +1,8 @@
 class Example
   include Callmeback
 
+  attr_accessor :result
+
   before :before_foo => :bar
   after :after_foo => :bar
   around :around_foo => :around_bar

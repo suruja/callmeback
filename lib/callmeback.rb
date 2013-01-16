@@ -6,16 +6,20 @@ module Callmeback
   include ActiveSupport::Callbacks
 
   included do
-    # Initialize the callmeback methods and method index
-    self.callmeback_methods = {}
-    self.callmeback_method_index = 0
+    if defined?(Mongoid::Document)
+      after_initialize do
+        callback_binding
+      end
+    end
   end
 
   def initialize(*args, &block)
     super(*args, &block)
 
-    # Overwrite the initialize method to perform the defined callbacks binding
-    callback_binding
+    unless defined?(Mongoid::Document)
+      # Overwrite the initialize method to perform the defined callbacks binding
+      callback_binding
+    end
   end
 
   def callback_binding
@@ -63,8 +67,18 @@ module Callmeback
   end
 
   module ClassMethods
-    attr_accessor :callmeback_methods
-    attr_accessor :callmeback_method_index
+    attr_writer :callmeback_methods
+    attr_writer :callmeback_method_index
+
+    # Initialize the callmeback methods and method index
+    def callmeback_methods
+      @callmeback_methods ||= {}
+    end
+
+    # Initialize the callmeback methods and method index
+    def callmeback_method_index
+      @callmeback_method_index ||= 0
+    end
 
     [:before, :after, :around].each do |callback_prefix|
       define_method callback_prefix do |arg, &block|

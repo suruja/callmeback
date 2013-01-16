@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "callmeback"
-  s.version = "1.2.0"
+  s.version = "1.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sebastien Azimi"]
-  s.date = "2013-01-15"
+  s.date = "2013-01-16"
   s.description = ""
   s.email = "sebstp@gmail.com"
   s.extra_rdoc_files = [
