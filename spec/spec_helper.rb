@@ -1,6 +1,9 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
+require "active_record"
+ActiveRecord::Base.establish_connection :adapter => :nulldb, :schema  => File.join(File.dirname(__FILE__), "app", "db", "schema.rb")
+
 MODELS = File.join(File.dirname(__FILE__), "app/models")
 
 require 'rspec'

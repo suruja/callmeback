@@ -1,9 +1,10 @@
+require "active_record"
 require "#{File.dirname(__FILE__)}/../support/example_definition.rb"
 
-class Example
+class ExampleActiveRecord < ActiveRecord::Base
   include ExampleDefinition
 
-  def initialize
+  after_initialize do
     callmeback!
     self.result = []
   end

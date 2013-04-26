@@ -5,24 +5,7 @@ module Callmeback
   extend ActiveSupport::Concern
   include ActiveSupport::Callbacks
 
-  included do
-    if defined?(Mongoid::Document)
-      after_initialize do
-        callback_binding
-      end
-    end
-  end
-
-  def initialize(*args, &block)
-    super(*args, &block)
-
-    unless defined?(Mongoid::Document)
-      # Overwrite the initialize method to perform the defined callbacks binding
-      callback_binding
-    end
-  end
-
-  def callback_binding
+  def callmeback!
     self.class.callmeback_methods.each do |callback_prefix, callback_array|
       callback_array.each do |callback_hash|
         callback_hash.each do |callback_key, callbacks|
@@ -38,11 +21,11 @@ module Callmeback
           binded_methods.each do |binded|
             callbacks.each do |callback|
 
-              binded_suffix = "method_#{self.class.callmeback_method_index}"
+              binded_suffix = :"method_#{self.class.callmeback_method_index}"
               self.class.callmeback_method_index += 1
 
-              prefixed_wrapped_binded = "callmeback_wrapped_#{binded_suffix}"
-              prefixed_unwrapped_binded = "callmeback_unwrapped_#{binded_suffix}"
+              prefixed_wrapped_binded = :"callmeback_wrapped_#{binded_suffix}"
+              prefixed_unwrapped_binded = :"callmeback_unwrapped_#{binded_suffix}"
 
               class_eval do
                 define_method prefixed_wrapped_binded do

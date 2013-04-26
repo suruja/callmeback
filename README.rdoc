@@ -19,25 +19,30 @@ Or add it to your gem file:
 == Usage
 
 === Basic
-Add +include Callmeback+ after *all* your module inclusions to be sure the gem works.
+Add +include Callmeback+ to your class:
   class Example
     include Callmeback
 
     before :foo => :bar
 
+    def initialize
+      callmeback!
+      @result = []
+    end
+
     def foo
-      (@result ||= []) << 'foo'
+      @result << 'foo'
     end
 
     def bar
-      (@result ||= []) << 'bar'
+      @result << 'bar'
     end
   end
 
   example = Example.new
   example.foo #=> ['bar','foo']
 
-Because this extension overrides the +.initialize+ method, if you need to redefine it, please add +callback_binding+ to your +.initialize+ method. Here is the same example as above but implemeting the +.initialize+ method:
+Because your methods must be redefined to perform custom callbacks, you need to call +#callmeback!+ on initialization.
 
 You can use +before+, +after+ and +around+, as if you use the suggested method in the +ActiveSupport::Callbacks+ documentation.
 To perform the +around+ callbacks, define them like:
@@ -48,6 +53,18 @@ To perform the +around+ callbacks, define them like:
     yield
     bar
   end
+
+=== ActiveRecord and Mongoid
+
+You may want to use Callmeback on your ActiveRecord or Mongoid models. I recommend you not to redefine the +initialize+ method. Instead please use the +after_initialize+ callback. Here is an example using Mongoid:
+  class Example
+    include Mongoid::Document
+    include Callmeback
+
+    after_initialize do
+      callmeback!
+    end
+    ...
 
 === Array of callbacks
 You can pass an array of callback method symbol:

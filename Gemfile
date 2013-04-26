@@ -14,4 +14,7 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'pry'
+  gem "activerecord"
+  gem "activerecord-nulldb-adapter"
+  gem "mongoid"
 end

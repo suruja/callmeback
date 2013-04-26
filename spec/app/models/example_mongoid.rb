@@ -1,9 +1,11 @@
+require "mongoid"
 require "#{File.dirname(__FILE__)}/../support/example_definition.rb"
 
-class Example
+class ExampleMongoid
+  include Mongoid::Document
   include ExampleDefinition
 
-  def initialize
+  after_initialize do
     callmeback!
     self.result = []
   end
