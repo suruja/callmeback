@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "callmeback"
-  s.version = "1.2.1"
+  s.version = "1.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sebastien Azimi"]
-  s.date = "2013-01-16"
+  s.date = "2013-04-26"
   s.description = ""
   s.email = "sebstp@gmail.com"
   s.extra_rdoc_files = [
@@ -28,7 +28,11 @@ Gem::Specification.new do |s|
     "VERSION",
     "callmeback.gemspec",
     "lib/callmeback.rb",
+    "spec/app/db/schema.rb",
     "spec/app/models/example.rb",
+    "spec/app/models/example_active_record.rb",
+    "spec/app/models/example_mongoid.rb",
+    "spec/app/support/example_definition.rb",
     "spec/callmeback_spec.rb",
     "spec/spec_helper.rb"
   ]
@@ -51,6 +55,9 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<guard>, [">= 0"])
       s.add_development_dependency(%q<guard-rspec>, [">= 0"])
       s.add_development_dependency(%q<pry>, [">= 0"])
+      s.add_development_dependency(%q<activerecord>, [">= 0"])
+      s.add_development_dependency(%q<activerecord-nulldb-adapter>, [">= 0"])
+      s.add_development_dependency(%q<mongoid>, [">= 0"])
     else
       s.add_dependency(%q<activesupport>, [">= 3.2.3"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
@@ -61,6 +68,9 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<guard>, [">= 0"])
       s.add_dependency(%q<guard-rspec>, [">= 0"])
       s.add_dependency(%q<pry>, [">= 0"])
+      s.add_dependency(%q<activerecord>, [">= 0"])
+      s.add_dependency(%q<activerecord-nulldb-adapter>, [">= 0"])
+      s.add_dependency(%q<mongoid>, [">= 0"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 3.2.3"])
@@ -72,6 +82,9 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<guard>, [">= 0"])
     s.add_dependency(%q<guard-rspec>, [">= 0"])
     s.add_dependency(%q<pry>, [">= 0"])
+    s.add_dependency(%q<activerecord>, [">= 0"])
+    s.add_dependency(%q<activerecord-nulldb-adapter>, [">= 0"])
+    s.add_dependency(%q<mongoid>, [">= 0"])
   end
 end
 
